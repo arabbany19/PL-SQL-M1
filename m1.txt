@@ -5,14 +5,18 @@ password varchar(20) not null,
 email varchar(30) not null,
 notelp varchar(13) not null,
 tgl_lahir date not null,
-gender varchar(10) not null,
-saldo number(8));
+jk varchar(10) not null,
+saldo number(8),
+nik varchar(40),
+passport varchar(40);
 
 create table hotel(
 id number(8) primary key not null,
 nama_hotel varchar(20) not null,
 deskripsi varchar(150) not null,
-alamat varchar(50) not null,
+provinsi varchar(20) not null,
+kota varchar(20) not null,
+kec varchar(20) not null,
 star number(6) not null);
 
 create table pesawat(
@@ -36,8 +40,9 @@ checkout timestamp not null,
 tgl_pemesanan timestamp not null,
 total_harga number(10) not null,
 bukti_pembayaran varchar(100) not null),
-id_akun number(8) not null;
-id_pesawat_bagasi number(8);
+id_akun number(8) not null,
+id_pesawat_bagasi number(8),
+jml_pelanggan number(8);
 
 create table hotel_kamar(
 id number(8) primary key not null,
@@ -67,7 +72,13 @@ status number(3));
 
 create table kamar(
 id number(8) primary key not null,
-tipe_kasur varchar(15) not null);
+tipe_kasur varchar(15) not null,
+tipe_kamar varchar(15) not null,
+id_fas_kamar number(8) not null);
+
+create table fasilitas_kamar(
+id number(8) not null,
+fasilitas_kamar varchar(20) not null);
 
 create table fasilitas(
 id number(8) primary key not null,
@@ -77,12 +88,9 @@ create table jenis_pesawat(
 id number(8) primary key not null,
 jenis varchar(20) not null);
 
-alter table pemesanan modify id_kembali null;
-
-create table pesawat_kelas_penerbangan(
+create table pesawat_penerbangan(
 id number(8) primary key not null,
 id_pesawat number(8) not null,
-id_kelas_kursi number(8) not null,
 id_penerbangan number(8) not null,
 harga_tiket number(10) not null);
 
@@ -114,31 +122,35 @@ create table kelas_kursi(
 id number(8) primary key not null,
 id_kelas number(8) not null,
 id_kursi number(8) not null,
-status number(2) not null);
+status number(2) not null,
+stock number(8));
 
 create table pelanggan(
 id number(8) not null,
 nama varchar(25) not null,
-kursi varchar(3) not null);
+id_kkursi_berangkat number(8) not null,
+id_kkursi_kembali number(8)),
+nik varchar(40);
+passport varchar(40);
 
 //insert
 insert all
-into akun(id, username, password, email, notelp, tgl_lahir, gender) values('1', 'annisa', 'rabbany', 'annisa@gmail.com', '081234567890', '10/19/1996', 'perempuan')
-into akun(id, username, password, email, notelp, tgl_lahir, gender) values('2', 'rabbany', 'annisa', 'rabbany@gmail.com', '087890123456', '10/11/1996', 'perempuan')
-into akun(id, username, password, email, notelp, tgl_lahir, gender) values('3', 'andre', 'sm', 'andre@gmail.com', '081890678456', '08/23/1996', 'laki-laki')
+into akun(id, username, password, email, notelp, tgl_lahir, jk,nik,passport) values('1', 'annisa', 'rabbany', 'annisa@gmail.com', '081234567890', '10/19/1996', 'perempuan','33220284294247','2394789210')
+into akun(id, username, password, email, notelp, tgl_lahir, jk,nik,passport) values('2', 'rabbany', 'annisa', 'rabbany@gmail.com', '087890123456', '10/11/1996', 'perempuan','33274920220249','2394444440')
+into akun(id, username, password, email, notelp, tgl_lahir, jk,nik,passport) values('3', 'andre', 'sm', 'andre@gmail.com', '081890678456', '08/23/1996', 'laki-laki','332347326879282','2392222220')
 select * from dual;
 
 insert all
-into hotel(id, nama_hotel, deskripsi, alamat, star) values('1', 'Hotel Indonesia', 'Hotel dengan pemandangan alam indonesia', 'Bandung', '4')
-into hotel(id, nama_hotel, deskripsi, alamat, star) values('2', 'Jaya Hotel', 'Hotel kelas internasional', 'Bali', '5')
-into hotel(id, nama_hotel, deskripsi, alamat, star) values('3', 'Hotel Ungu', 'Hotel nyaman dan murah', 'Jakarta', '3')
-into hotel(id, nama_hotel, deskripsi, alamat, star) values('4', 'Bec Hotel', 'Hotel bernuansa pantai', 'Bali', '4')
+into hotel(id, nama_hotel, deskripsi, provinsi, kota, kec, star) values('1', 'Hotel Indonesia', 'Hotel dengan pemandangan alam indonesia', 'Jawa Tengah', 'Bandung', 'Bandung', '4')
+into hotel(id, nama_hotel, deskripsi, provinsi, kota, kec, star) values('2', 'Jaya Hotel', 'Hotel kelas internasional', 'Bali', 'Bali', 'Bali', '5')
+into hotel(id, nama_hotel, deskripsi, provinsi, kota, kec, star) values('3', 'Hotel Ungu', 'Hotel nyaman dan murah', 'DKI Jakarta', 'Jakarta', 'Tomang', '3')
+into hotel(id, nama_hotel, deskripsi, provinsi, kota, kec, star) values('4', 'Bec Hotel', 'Hotel bernuansa pantai', 'Bali', 'Bali', 'Bali', '4')
 select * from dual;
 
 insert all
-into kamar(id, tipe_kasur) values('1', '2 Single Bed')
-into kamar(id, tipe_kasur) values('2', 'Extra Bed')
-into kamar(id, tipe_kasur) values('3', '1 King Bed')
+into kamar(id, tipe_kasur,tipe_kamar,id_fas_kamar) values('1', '2 Single Bed','Type 21','1')
+into kamar(id, tipe_kasur,tipe_kamar,id_fas_kamar) values('2', 'Extra Bed','Type 32','1')
+into kamar(id, tipe_kasur,tipe_kamar,id_fas_kamar) values('3', '1 King Bed','Type 64','1')
 select * from dual;
 
 insert all
@@ -146,6 +158,12 @@ into fasilitas(id, fasilitas) values('1', 'wifi')
 into fasilitas(id, fasilitas) values('2', 'parking area')
 into fasilitas(id, fasilitas) values('3', 'swimming pool')
 into fasilitas(id, fasilitas) values('4', 'breakfast')
+select * from dual;
+
+insert all
+into fasilitas_kamar(id, fasilitas_kamar) values('1', 'wifi')
+into fasilitas_kamar(id, fasilitas_kamar) values('1', 'layanan 24 jam')
+into fasilitas_kamar(id, fasilitas_kamar) values('1', 'breakfast')
 select * from dual;
 
 insert all
@@ -228,25 +246,29 @@ into jenis_kelas(id_jenis, id_kelas) values('3', '2')
 select * from dual;
 
 insert all
-into kelas_kursi(id, id_kelas, id_kursi, status) values('1', '2', '3','1')
-into kelas_kursi(id, id_kelas, id_kursi, status) values('2', '2', '4','0')
-into kelas_kursi(id, id_kelas, id_kursi, status) values('3', '2', '5','0')
+into kelas_kursi(id, id_kelas, id_kursi, status,stock) values('1', '2', '3','1',20)
+into kelas_kursi(id, id_kelas, id_kursi, status,stock) values('2', '2', '4','0',30)
+into kelas_kursi(id, id_kelas, id_kursi, status,stock) values('3', '2', '5','0',25)
+into kelas_kursi(id, id_kelas, id_kursi, status,stock) values('4', '3', '4','0',30)
+into kelas_kursi(id, id_kelas, id_kursi, status,stock) values('5', '3', '5','0',25)
 select * from dual;
 
 insert all
-into pesawat_kelas_penerbangan(id, id_pesawat, id_kelas_kursi, id_penerbangan, harga_tiket) values('1', '1', '1', '1', 750000)
+into pesawat_penerbangan(id, id_pesawat, id_kelas_kursi, id_penerbangan, harga_tiket) values('1', '1', '1', '1', 750000)
 select * from dual;
 
 insert into penerbangan(id, id_bandaraasal, id_bandaratujuan, tgl_departure, tgl_landing) values('1', '1', '5', '18-OCT-18 06.00.00.000000 AM', '18-OCT-18 08.50.00.000000 AM');
 
 insert all
-into pemesanan(id, id_pelanggan, id_hotel_kamar, id_keberangkatan, id_kembali, checkin, checkout, tgl_pemesanan, total_harga, bukti_pembayaran, id_akun) 
-        values('1', '1', '1', '1', null, '18-OCT-18 11.00.00.000000 AM', '21-OCT-18 09.00.00.000000 AM', '16-OCT-18 07.00.00.000000 AM', '2550000', 'ASSETS/IMG/1235.JPG', '1')
+into pemesanan(id, id_pelanggan, id_hotel_kamar, id_keberangkatan, id_kembali, checkin, checkout, tgl_pemesanan, total_harga, bukti_pembayaran, id_akun,jml_pelanggan) 
+        values('1', '1', '1', '1', null, '18-OCT-18 11.00.00.000000 AM', '21-OCT-18 09.00.00.000000 AM', '16-OCT-18 07.00.00.000000 AM', '2550000', 'ASSETS/IMG/1235.JPG', '1','2')
+into pemesanan(id, id_pelanggan, id_hotel_kamar, id_keberangkatan, id_kembali, checkin, checkout, tgl_pemesanan, total_harga, bukti_pembayaran, id_akun,jml_pelanggan) 
+        values('2', '1', '1', '1', null, '10-OCT-18 09.00.00.000000 AM', '18-OCT-18 04.00.00.000000 AM', '16-OCT-18 07.00.00.000000 AM', '3550000', 'ASSETS/IMG/1788.JPG', '1','2')
 select * from dual;
 
 insert all
- into pelanggan(id, nama, kursi) values('1','Nisa','B1')
- into pelanggan(id, nama, kursi) values('1','Andre','B2')
+ into pelanggan(id, nama, id_kkursi_berangkat, id_kkursi_kembali,nik,passport) values('1','Nisa','3',null,'334444444444444','336666666')
+ into pelanggan(id, nama, id_kkursi_berangkat, id_kkursi_kembali,nik,passport) values('1','Andre','4',null,'33222222222222','337777777')
 select * from dual;
 
 //join =============================================================
@@ -258,18 +280,20 @@ select * from akun
 where id=1;
 //--------------------------------
 //select all hotel
-select a.id,a.nama_hotel,a.deskripsi,a.alamat,a.star,c.tipe_kasur,b.harga_kamar,e.fasilitas from hotel a
+select a.id,a.nama_hotel,a.deskripsi,a.provinsi,a.kota,a.kec,a.star,c.tipe_kasur,c.tipe_kamar,b.harga_kamar,e.fasilitas,f.fasilitas_kamar from hotel a
 join hotel_kamar b on a.id= b.id_hotel
 join kamar c on b.id_kamar=c.id
 join hotel_fasilitas d on a.id=d.id_hotel 
-join fasilitas e on d.id_fasilitas=e.id;
+join fasilitas e on d.id_fasilitas=e.id,
+join fasilitas_kamar f on c.id_fas_kamar=f.id;
 
 //select Hotel id=1
-select a.id,a.nama_hotel,a.deskripsi,a.alamat,a.star,c.tipe_kasur,b.harga_kamar,e.fasilitas from hotel a
+select a.id,a.nama_hotel,a.deskripsi,a.provinsi,a.kota,a.kec,a.star,c.tipe_kasur,c.tipe_kamar,b.harga_kamar,e.fasilitas,f.fasilitas_kamar from hotel a
 join hotel_kamar b on a.id= b.id_hotel
 join kamar c on b.id_kamar=c.id
 join hotel_fasilitas d on a.id=d.id_hotel 
-join fasilitas e on d.id_fasilitas=e.id
+join fasilitas e on d.id_fasilitas=e.id,
+join fasilitas_kamar f on c.id_fas_kamar=f.id;
 where a.id=1;
 //--------------------------------
 //select all pesawat
@@ -289,31 +313,35 @@ join jenis_kelas d on c.id=d.id_jenis
 join kelas e on d.id_kelas=e.id
 join kelas_kursi f on f.id_kelas=e.id
 join kursi g on f.id_kursi=g.id
-where a.id=1 and f.status=0;
+where a.id=1 and f.status=0 and f.stock>0;
 //--------------------------------
 
 //select history pemesanan akun id=1
 
 select
-b.id,b.username,b.notelp,d.nama_hotel,e.tipe_kasur,a.checkin,a.checkout,a.tgl_pemesanan,
+b.id,b.username,b.notelp,d.nama_hotel,e.tipe_kasur,e.tipe_kamar,a.checkin,a.checkout,a.tgl_pemesanan,
 a.total_harga,a.bukti_pembayaran,g.nama_pesawat,l.jenis as "JENIS PESAWAT",h.tgl_departure,h.tgl_landing,i.nama_bandara,
-i.kota,j.nama,j.kursi,p.berat as "BERAT BAGASI"
+i.kota,j.nama,r.kursi as "Kursi Berangkat",t.kursi as "Kursi Kembali",p.berat as "BERAT BAGASI"
 from pemesanan a
-join akun b on a.id_akun=b.id
-join hotel_kamar c on a.id_hotel_kamar=c.id
-join hotel d on c.id_hotel=d.id
-join kamar e on c.id_kamar=e.id
-join pesawat_kelas_penerbangan f on a.id_keberangkatan=f.id
-join pesawat g on f.id_pesawat=g.id
-join penerbangan h on f.id_penerbangan=h.id
-join bandara i on h.id_bandaraasal=i.id
-join pelanggan j on a.id_pelanggan=j.id
-join pesawat_jenis k on g.id=k.id_pesawat
-join jenis_pesawat l on k.id_jenis=l.id
-join jenis_kelas m on l.id=m.id_jenis
-join kelas n on m.id_kelas=n.id
-join pesawat_bagasi o on a.id_pesawat_bagasi=o.id_pesawat
-join bagasi p on o.id_bagasi=p.id
+left join akun b on a.id_akun=b.id
+left join hotel_kamar c on a.id_hotel_kamar=c.id
+left join hotel d on c.id_hotel=d.id
+left join kamar e on c.id_kamar=e.id
+left join pesawat_penerbangan f on a.id_keberangkatan=f.id
+left join pesawat g on f.id_pesawat=g.id
+left join penerbangan h on f.id_penerbangan=h.id
+left join bandara i on h.id_bandaraasal=i.id
+left join pelanggan j on a.id_pelanggan=j.id
+left join pesawat_jenis k on g.id=k.id_pesawat
+left join jenis_pesawat l on k.id_jenis=l.id
+left join jenis_kelas m on l.id=m.id_jenis
+left join kelas n on m.id_kelas=n.id
+left join pesawat_bagasi o on a.id_pesawat_bagasi=o.id_pesawat
+left join bagasi p on o.id_bagasi=p.id
+left join kelas_kursi q on j.id_kkursi_berangkat=q.id
+left join kursi r on q.id_kursi=r.id
+left join kelas_kursi s on j.id_kkursi_kembali=s.id
+left join kursi t on s.id_kursi=t.id
 where b.id=1;
 //===================================================================
 
@@ -328,10 +356,10 @@ BEGIN
   return(con);
 END;
 
-//login Akun
+//**login Akun
 create or replace procedure loginakun(user IN varchar,pass IN varchar)
 IS
- cursor e_data is select id, username, email, notelp, tgl_lahir, gender, saldo from akun where username = user and password=pass;
+ cursor e_data is select id, username, email, notelp, tgl_lahir, jk,nik,passport, saldo from akun where username = user and password=pass;
  e_rec e_data%rowtype;
 BEGIN
  IF(countakun(user,pass)=1)
@@ -342,7 +370,9 @@ BEGIN
   dbms_output.put_line('Email : '||e_rec.email);
   dbms_output.put_line('No Telepon : '||e_rec.notelp);
   dbms_output.put_line('Tanggal Lahir : '||e_rec.tgl_lahir);
-  dbms_output.put_line('Gender : '||e_rec.gender);
+  dbms_output.put_line('Jenis Kelamain : '||e_rec.jk);
+  dbms_output.put_line('Nik : '||e_rec.nik);
+  dbms_output.put_line('Passport : '||e_rec.passport);
   dbms_output.put_line('Saldo : '||e_rec.saldo);
   dbms_output.put_line('----------------------------------');
   dbms_output.put_line('--------- Welcome '||e_rec.username||' ---------');
@@ -357,6 +387,26 @@ BEGIN
  loginakun('andre','s');
 END;
 
+//**procedure REGISTRASI
+CREATE OR REPLACE PROCEDURE insertAKUN(
+	   username IN akun.username%type,
+	   password IN akun.password%type,
+	   email IN akun.email%type,
+           notelp IN akun.notelp%type,
+           tgl_lahir IN akun.tgl_lahir%type,
+           jk IN akun.jk%type,
+           nik IN akun.nik%type,
+           passport IN akun.passport%type)
+IS con NUMBER;
+BEGIN
+  select count(id) into con from akun;
+  INSERT INTO akun ("ID", "USERNAME", "PASSWORD", "EMAIL", "NOTELP", "TGL_LAHIR", "JK","SALDO","NIK","PASSPORT") 
+  VALUES (con+1, username, password, email, notelp, tgl_lahir, jk,0,nik,passport);
+END;
+
+BEGIN
+   insertAKUN('zkyna','elghlasku','kyna@gmail.com','089878990990','10-13-2017','Perempuan','335555555555','99999999999');
+END
 
 ////show pesawat -----------------------------------------------------------------
 //get jadwal pesawat
@@ -372,11 +422,11 @@ IS
  left join kelas e on d.id_kelas=e.id
  left join kelas_kursi f on f.id_kelas=e.id
  left join kursi g on f.id_kursi=g.id
- left join pesawat_kelas_penerbangan h on a.id=h.id_pesawat 
+ left join pesawat_penerbangan h on a.id=h.id_pesawat 
  left join penerbangan i on h.id_penerbangan=i.id
  left join bandara j on i.id_bandaraasal=j.id 
  left join bandara k on i.id_bandaratujuan=k.id
- where i.tgl_departure=TGL and j.kota=KOTA_ASAL and k.kota=KOTA_TUJUAN and e.tipe_kelas=KELAS and f.status=0;
+ where i.tgl_departure=TGL and j.kota=KOTA_ASAL and k.kota=KOTA_TUJUAN and e.tipe_kelas=KELAS and f.status=0 and f.stock=0;
  e_rec e_data%rowtype;
 BEGIN
  for e_rec in e_data loop
@@ -401,12 +451,12 @@ END;
 //procedure KAMAR HOTEL
 create or replace procedure getkamarhotel(KOTA IN VARCHAR) 
 IS
- cursor e_data is select DISTINCT a.id, a.nama_hotel, a.deskripsi, a.alamat, a.star, c.tipe_kasur, b.harga_kamar
+ cursor e_data is select DISTINCT a.id, a.nama_hotel, a.deskripsi,a.provinsi,a.kota,a.kec, a.star, c.tipe_kasur, c.tipe_kamar, b.harga_kamar
 
  from hotel a
  left join hotel_kamar b on a.id=b.id_hotel
  left join kamar c on b.id_kamar=c.id
- where a.alamat=KOTA and not(b.jml_kamar=0);
+ where a.kota=KOTA and not(b.jml_kamar=0);
  e_rec e_data%rowtype;
 
 BEGIN
@@ -414,9 +464,10 @@ BEGIN
   dbms_output.put_line('Id Hotel: '||e_rec.id);
   dbms_output.put_line('Nama Hotel : '||e_rec.nama_hotel);
   dbms_output.put_line('Deskripsi : '||e_rec.deskripsi);
-  dbms_output.put_line('Alamat : '||e_rec.alamat);
+  dbms_output.put_line('Alamat : '||e_rec.kec||', '||e_rec.kota||', '||e_rec.provinsi);
   dbms_output.put_line('Star : '||e_rec.star);
   dbms_output.put_line('Tipe Kasur : '||e_rec.tipe_kasur);
+  dbms_output.put_line('Tipe Kamar : '||e_rec.tipe_kamar);
   dbms_output.put_line('Harga Kamar : '||e_rec.harga_kamar||'/org');
   dbms_output.put_line('----------------------------------');
  end loop;
@@ -426,7 +477,7 @@ BEGIN
  getkamarhotel('Bali');
 END;
 //--------------------------------------------------
-//get jadwal pesawat & kamar hotel
+//**get jadwal pesawat & kamar hotel
 create or replace procedure getpesawathotel(TGL IN TIMESTAMP, KOTA_ASAL IN VARCHAR, KOTA_TUJUAN IN VARCHAR, KELAS IN VARCHAR,KOTA_HOTEL IN VARCHAR) 
 AS
 BEGIN
@@ -438,7 +489,7 @@ BEGIN
  getpesawathotel('18-OCT-18 06.00.00.000000 AM','Jakarta','Bali','Business','Bali');
 END;
 //-----------------------------------------------------
-//procedure pilih PESAWAT
+//**procedure pilih PESAWAT
 create or replace procedure getpesawat(ID1 IN NUMBER,kelas IN VARCHAR)
 IS
  cursor e_data is select a.id, a.nama_pesawat, c.jenis, e.tipe_kelas, i.berat
@@ -466,16 +517,17 @@ BEGIN
  getpesawat(1,'Business');
 END;
 
-//procedure pilih HOTEL
+//**procedure pilih HOTEL
 create or replace procedure gethotel(ID1 IN NUMBER)
 IS
- cursor e_data is select a.id, a.nama_hotel, a.deskripsi, a.alamat, a.star, c.tipe_kasur, b.harga_kamar, e.fasilitas
+ cursor e_data is select a.id, a.nama_hotel, a.deskripsi, a.provinsi, a.kota, a.kec, a.star, c.tipe_kasur, c.tipe_kamar, b.harga_kamar, e.fasilitas,f.fasilitas_kamar
 
  from hotel a
  left join hotel_kamar b on a.id=b.id_hotel
  left join kamar c on b.id_kamar=c.id
  left join hotel_fasilitas d on a.id=d.id_hotel
  left join fasilitas e on d.id_fasilitas=e.id
+ left join fasilitas_kamar f on c.id_fas_kamar=f.id
  where a.id = ID1;
  e_rec e_data%rowtype;
 BEGIN
@@ -483,12 +535,13 @@ BEGIN
   dbms_output.put_line('Id Hotel: '||e_rec.id);
   dbms_output.put_line('Nama Hotel : '||e_rec.nama_hotel);
   dbms_output.put_line('Deskripsi : '||e_rec.deskripsi);
-  dbms_output.put_line('Alamat : '||e_rec.alamat);
+  dbms_output.put_line('Alamat : '||e_rec.kec||', '||e_rec.kota||', '||e_rec.provinsi);
   dbms_output.put_line('Star : '||e_rec.star);
   dbms_output.put_line('Tipe Kasur : '||e_rec.tipe_kasur);
+  dbms_output.put_line('Tipe Kamar : '||e_rec.tipe_kamar);
   dbms_output.put_line('Harga Kamar : '||e_rec.harga_kamar);
   dbms_output.put_line('Fasilitas : '||e_rec.fasilitas);
-  
+  dbms_output.put_line('Fasilitas Kamar : '||e_rec.fasilitas_kamar);
   dbms_output.put_line('----------------------------------');
  end loop;
 END; 
@@ -498,47 +551,162 @@ BEGIN
 END;
 
 //insert pemesanan -----------------------------------------------
+//get id hotelkamar dari id hotel dan id kamar
+create or replace function gethotelkamar(IDH IN NUMBER, IDK IN NUMBER)
+return NUMBER IS idhk number(10);
+BEGIN
+  select id into idhk
+  from hotel_kamar
+  where id=IDH and id=IDK;
+  return(idhk);
+END;
+
+//get id kelaskursi dari id pesawat dan id kelas
+create or replace function getkelaskursi(IDPS IN NUMBER, IDK IN NUMBER)
+return NUMBER IS idkk number(10);
+BEGIN
+  select f.id into idkk
+  from pesawat a
+  join pesawat_jenis b on a.id=b.id_pesawat
+  join jenis_pesawat c on c.id=b.id_jenis
+  join jenis_kelas d on c.id=d.id_jenis
+  join kelas e on e.id=d.id_kelas
+  join kelas_kursi f on e.id=f.id_kelas
+  where b.id_pesawat=IDPS and d.id_kelas=IDK and f.status=0 and f.stock>0 and rownum<=1 ;
+  return(idkk);
+END;
+
+//get id pkp dari id pesawat dan id penerbangan
+create or replace function getkelaskursi(IDPS IN NUMBER, IDP IN NUMBER)
+return NUMBER IS idpkp number(10);
+BEGIN
+  select id into idpkp
+  from pesawat_penerbangan
+  where id_pesawat=IDPS and id_penerbangan=IDP;
+  return(idpkp);
+END;
+
+//select id nama kursi dari id kelas_kursi
+create or replace function getnamakursi(IDKK IN NUMBER)
+return VARCHAR IS idnk varchar(3);
+BEGIN
+  select b.kursi into idnk
+  from kelas_kursi a join kursi b
+  on a.id_kursi=b.id
+  where a.id=IDKK;
+  return(idnk);
+END;
+
+//select nama kursi
+create or replace function getnamakursi(IDKK IN NUMBER)
+return VARCHAR IS idnk varchar(3);
+BEGIN
+  select b.kursi into idnk
+  from kelas_kursi a join kursi b
+  on a.id_kursi=b.id
+  where a.id=IDKK;
+  return(idnk);
+END;
+
+
+//**procedure KURSI PELANGGAN
+CREATE OR REPLACE PROCEDURE insertPELANGGAN(
+	   id IN pelanggan.id%type,
+	   nama IN pelanggan.nama%type,
+           kursi_berangkat IN pelanggan.id_kkursi_berangkat%type,
+           kursi_kembali IN pelanggan.id_kkursi_kembali%type,
+           nik IN pelanggan.nik%type,
+           passport IN pelanggan.passport%type)
+AS
+BEGIN
+  INSERT INTO pelanggan(ID, NAMA, id_kkursi_berangkat, id_kkursi_kembali,nik,passport) 
+  VALUES (id, nama, KURSI_BERANGKAT, KURSI_KEMBALI,nik,passport);
+END;
+
+
+BEGIN
+   insertPELANGGAN('5','kyna',5, null,'33444444444444','999999999999');
+END;
+
+//--------------------------------------------------
+//procedure get harga kamar
+CREATE OR REPLACE function gethargakamar(idhotelkamar IN hotel_kamar.id%type)
+return NUMBER IS hargakamar number(10);
+BEGIN
+  select harga_kamar into hargakamar
+  from hotel_kamar
+  where id=idhotelkamar;
+  return(hargakamar);
+END;
+
+//procedure get harga tiket
+CREATE OR REPLACE function gethargatiket(idpp IN number)
+return NUMBER IS hargatiket number(10);
+BEGIN
+  select harga_tiket into hargatiket
+  from pesawat_penerbangan
+  where id=idpp;
+  return(hargatiket);
+END;
+
+//procedure get harga bagasi
+CREATE OR REPLACE function gethargabagasi(idpb IN number)
+return NUMBER IS hargabagasi number(10);
+BEGIN
+  select harga_bagasi into hargabagasi
+  from pesawat_bagasi
+  where id=idpb;
+  return(hargabagasi);
+END;
+
+//procedure hitung total harga
+CREATE OR REPLACE function totharga(hkamar IN number,htiket IN number,htiketkembali IN number,hbagasi IN number,jml IN number)
+return NUMBER IS totharga number(10);
+BEGIN
+IF(htiketkembali IS NULL)
+THEN
+  totharga:=hkamar+(htiket*jml)+hbagasi;
+ELSE
+  totharga:=hkamar+(htiket+htiketkembali*jml)+hbagasi;
+END IF;  
+  return(totharga);
+END;
+
+//**input reservasi
 create or replace procedure reservasi(
 id1 IN pemesanan.id%type,idpelanggan IN pemesanan.id_pelanggan%type,
 idhotelkamar IN pemesanan.id_hotel_kamar%type,idkeberangkatan IN pemesanan.id_keberangkatan%type,
 idkembali IN pemesanan.id_kembali%type,checkin1 IN pemesanan.checkin%type,checkout1 IN pemesanan.checkout%type,
 tglpemesanan IN pemesanan.tgl_pemesanan%type,totalharga IN pemesanan.total_harga%type,
 buktipembayaran IN pemesanan.bukti_pembayaran%type,idakun IN pemesanan.id_akun%type,
-idpesawatbagasi IN pemesanan.id_pesawat_bagasi%type)
+idpesawatbagasi IN pemesanan.id_pesawat_bagasi%type,jml_penumpang IN pemesanan.jml_penumpang%type)
 AS
 BEGIN
-insert into pemesanan(id, id_pelanggan, id_hotel_kamar, id_keberangkatan, id_kembali, checkin, checkout, tgl_pemesanan, total_harga, bukti_pembayaran, id_akun,id_pesawat_bagasi) 
- values(id1,idpelanggan,idhotelkamar,idkeberangkatan,idkembali,checkin1,checkout1,tglpemesanan,totalharga,buktipembayaran,idakun,idpesawatbagasi);
+insert into pemesanan(id, id_pelanggan, id_hotel_kamar, id_keberangkatan, id_kembali, checkin, 
+                      checkout, tgl_pemesanan, total_harga, bukti_pembayaran, id_akun,id_pesawat_bagasi,jml_penumpang) 
+ values(id1,idpelanggan,idhotelkamar,idkeberangkatan,idkembali,checkin1,
+        checkout1,tglpemesanan,totalharga,buktipembayaran,idakun,idpesawatbagasi,jml_penumpang);
 dbms_output.put_line('-=Pengisian data berhasil=-');
 END;
 
 BEGIN
- reservasi(2,1,1,1,null,'20-oct-18 04.00.00.000000 AM','22-oct-18 04.00.00.000000 AM',systimestamp,2000000,'assets/img/345.jpg',1);
+ reservasi(4,1,1,1,null,'20-oct-18 04.00.00.000000 AM','22-oct-18 04.00.00.000000 AM',systimestamp,totharga(gethargakamar(1),gethargatiket(1),null,gethargabagasi(1),2),'assets/img/345.jpg',1,1,2);
 END;
 
-//return hotel
-create or replace function 
-select a.id,a.nama_hotel,a.deskripsi,a.alamat,a.star,c.tipe_kasur,c.harga_kamar,e.fasilitas from hotel a
-join hotel_kamar b on a.id= b.id_hotel
-join kamar c on b.id_kamar=c.id
-join hotel_fasilitas d on a.id=d.id_hotel 
-join fasilitas e on d.id_fasilitas=e.id
-where a.id=1;
-
 //-------------------------------------------------------------------
-//procedure select PEMESANAN akun id =1
+//**procedure select PEMESANAN akun id =1
 create or replace procedure getpemesanan(ID1 IN NUMBER)
 IS
- cursor e_data is select DISTINCT
+ cursor e_data is select 
  b.id, b.username, b.notelp, d.nama_hotel, e.tipe_kasur, a.checkin, a.checkout, a.tgl_pemesanan,
  a.total_harga, a.bukti_pembayaran, g.nama_pesawat,l.jenis, h.tgl_departure, 
- h.tgl_landing, i.nama_bandara, i.kota, j.nama, j.kursi
+ h.tgl_landing, i.nama_bandara, i.kota, j.nama, r.kursi as kberangkat,t.kursi as kkembali
   from pemesanan a
   left join akun b on a.id_akun=b.id
   left join hotel_kamar c on a.id_hotel_kamar=c.id
   left join hotel d on c.id_hotel=d.id
   left join kamar e on c.id_kamar=e.id
-  left join pesawat_kelas_penerbangan f on a.id_keberangkatan=f.id
+  left join pesawat_penerbangan f on a.id_keberangkatan=f.id
   left join pesawat g on f.id_pesawat=g.id
   left join penerbangan h on f.id_penerbangan=h.id
   left join bandara i on h.id_bandaraasal=i.id
@@ -549,6 +717,10 @@ IS
   left join kelas n on m.id_kelas=n.id
   left join pesawat_bagasi o on a.id_pesawat_bagasi=o.id_pesawat
   left join bagasi p on o.id_bagasi=p.id 
+  left join kelas_kursi q on j.id_kkursi_berangkat=q.id
+  left join kursi r on q.id_kursi=r.id
+  left join kelas_kursi s on j.id_kkursi_kembali=s.id
+  left join kursi t on s.id_kursi=t.id
   where b.id = ID1;
  e_rec e_data%rowtype;
 BEGIN
@@ -570,7 +742,8 @@ BEGIN
   dbms_output.put_line('Nama Bandara : '||e_rec.nama_bandara);
   dbms_output.put_line('Kota : '||e_rec.kota);
   dbms_output.put_line('Nama : '||e_rec.nama);
-  dbms_output.put_line('Kursi : '||e_rec.kursi);
+  dbms_output.put_line('Kursi Berangkat : '||e_rec.kberangkat);
+  dbms_output.put_line('Kursi Kembali : '||e_rec.kkembali);
   dbms_output.put_line('----------------------------------');
  end loop;
 END;
@@ -620,20 +793,33 @@ dbms_output.put_line('-=Refund berhasil=-');
 END;
 
 //auto increment refund table
-create or replace function autincrefund(id IN NUMBER)
-return NUMBER IS idn number(10);
+create or replace function numrefund(id IN NUMBER)
+return NUMBER IS con number(10);
 BEGIN
-  select max(id) into idn
+  select count(id) into con
   from refund;
-  return(idn+1);
+  return(con);
+END;
+
+create or replace function autincrefund(id IN NUMBER)
+return NUMBER IS idn number(10):=1;
+BEGIN
+  if(numrefund(0)=0)
+  THEN
+   return(idn);
+  ELSE
+   select max(id) into idn
+   from refund;
+   return(idn+1);
+  END IF;
 END;
 
 //insert form refund ke DB
-create or replace procedure formrefund(idpemesanan IN pemesanan.id%type,namrek IN refund.nama_rek%type,norek IN refund.no_rek%type)
+create or replace procedure formrefund(idakun IN akun.id%type,namrek IN refund.nama_rek%type,norek IN refund.no_rek%type)
 AS 
 BEGIN
-insert into refund(id, id_pemesanan, nama_rek, no_rek, status) 
- values(autincrefund(0),idpemesanan,namrek,norek,0);
+insert into refund(id, id_akun, nama_rek, no_rek, status) 
+ values(autincrefund(0),idakun,namrek,norek,0);
 dbms_output.put_line('-=Refund anda sedang kami proses, terimakasih=-');
 END;
 
@@ -641,21 +827,32 @@ BEGIN
 formrefund(1,'an','92802');
 END;
 //----------------------------------
-//select id kursi keberangkatan
-create or replace function getkursiberangkat(idpemesanan IN NUMBER)
-return NUMBER IS idkk number(10);
+//ubah status dan stock kursi
+create or replace procedure statuskursi(idpemesanan IN pemesanan.id%type,stat IN kelas_kursi.status%type,stock IN varchar)
+IS
+  cursor e_data is select a.id_kkursi_berangkat,a.id_kkursi_kembali
+  from pelanggan a
+  left join pemesanan b on a.id=b.id_pelanggan 
+  where b.id=idpemesanan; 
+  e_rec e_data%rowtype;
+  stk NUMBER;
 BEGIN
-  select b.id_kelas_kursi  into idkk
-  from pemesanan a
-  join pesawat_kelas_penerbangan b on a.id_keberangkatan=b.id
-  where a.id=idpemesanan;
-  return(idkk);
-END;
-//ubah status kursi
-create or replace procedure statuskursi(idkelaskursi IN kelas_kursi.id%type,stat IN kelas_kursi.status%type)
-AS 
-BEGIN
-update kelas_kursi set status=stat where id=idkelaskursi;
+for e_rec in e_data loop
+ update kelas_kursi set status=stat where id=e_rec.id_kkursi_berangkat;
+ update kelas_kursi set status=stat where id=e_rec.id_kkursi_kembali;
+ IF(stock='tambah')
+ THEN
+  select stock into stk from kelas_kursi where id=e_rec.id_kkursi_berangkat;
+  update kelas_kursi set stock=stk+1 where id=e_rec.id_kkursi_berangkat;
+  select stock into stk from kelas_kursi where id=e_rec.id_kkursi_kembali;
+  update kelas_kursi set stock=stk+1 where id=e_rec.id_kkursi_kembali;
+ ELSE
+  select stock into stk from kelas_kursi where id=e_rec.id_kkursi_berangkat;
+  update kelas_kursi set stock=stk-1 where id=e_rec.id_kkursi_berangkat;
+  select stock into stk from kelas_kursi where id=e_rec.id_kkursi_kembali;
+  update kelas_kursi set stock=stk-1 where id=e_rec.id_kkursi_kembali;
+ END IF;
+end loop;
 END;
 
 //select id kamar hotel
@@ -690,11 +887,11 @@ BEGIN
   return(idp);
 END;
 
-//refund saldo
+//**refund saldo
 create or replace procedure refundsaldo(idpemesanan IN pemesanan.id%type,persen IN NUMBER)
 AS 
 BEGIN
-statuskursi(getkursiberangkat(idpemesanan),idpemesanan);
+statuskursi(idpemesanan,1,'kurang');
 cancelkamar(idcancelkamar(idpemesanan),jmlkamar(idcancelkamar(idpemesanan)));
 delete from pelanggan where id=(getpelanggan(idpemesanan));
 addsaldo(gettotalharga(idpemesanan),getsaldo(getakun(idpemesanan)),getakun(idpemesanan),persen);
